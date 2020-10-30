@@ -25,8 +25,10 @@ exports.getUserById = async (req, res, next, id) => {
 exports.createUser = async (req, res) => {
    try {
       const user = await new User(req.body);
+      user.avtar = req.file.filename;
 
       user.save((err, user) => {
+         console.log(user);
          if (err) {
             return res.status(400).json({
                error: "User not able to save",
@@ -103,7 +105,7 @@ exports.signin = (req, res) => {
             email,
             address,
             mobile,
-            ownerOf,
+            role,
          } = user;
          return res.json({
             token,
@@ -114,7 +116,7 @@ exports.signin = (req, res) => {
                email,
                address,
                mobile,
-               ownerOf,
+               role,
             },
          });
       });

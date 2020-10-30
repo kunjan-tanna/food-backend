@@ -31,10 +31,14 @@ const userSchema = new mongoose.Schema(
          type: String,
          default: "",
       },
-      ownerOf: {
+      status: {
          type: String,
-         required: true,
-         trim: true,
+         default: "active",
+         enum: ["active", "InActive", "deleted"],
+      },
+      avtar: {
+         type: String,
+         default: null,
       },
       address: {
          type: String,
@@ -45,10 +49,10 @@ const userSchema = new mongoose.Schema(
          trim: true,
          required: true,
       },
-      status: {
+      role: {
          type: String,
-         default: "Active",
-         enum: ["Active", "InActive", "Deleted"],
+         default: "teacher",
+         enum: ["teacher", "admin"],
       },
       salt: String,
    },
