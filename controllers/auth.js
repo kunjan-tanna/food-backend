@@ -104,8 +104,9 @@ exports.signin = (req, res) => {
             lastName,
             email,
             address,
+            avtar,
             mobile,
-            role,
+            roleId,
          } = user;
          return res.json({
             token,
@@ -116,7 +117,8 @@ exports.signin = (req, res) => {
                email,
                address,
                mobile,
-               role,
+               avtar,
+               roleId,
             },
          });
       });
