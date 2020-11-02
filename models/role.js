@@ -1,8 +1,8 @@
 const mongoose = require("mongoose");
 
-const categorySchema = new mongoose.Schema(
+const roleSchema = new mongoose.Schema(
    {
-      categotyName: {
+      roleName: {
          type: String,
          required: false,
       },
@@ -15,4 +15,4 @@ const categorySchema = new mongoose.Schema(
    { timestamps: true }
 );
 
-module.exports = mongoose.model("Category", categorySchema);
+module.exports = mongoose.model("Role", roleSchema);

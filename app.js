@@ -15,7 +15,7 @@ const path = require("path");
 const authRoutes = require("./routes/auth");
 //FOR MEDICINE
 const medicineRoutes = require("./routes/medicine");
-const categoryRoutes = require("./routes/category");
+const roleRoutes = require("./routes/role");
 const packageRoutes = require("./routes/package");
 const rackRoutes = require("./routes/rack");
 const packageTypeRoutes = require("./routes/packageType");
@@ -48,7 +48,7 @@ app.use("/upload", express.static(path.join(__dirname, "public/upload")));
 
 //Routes
 app.use("/api", authRoutes);
-app.use("/api", categoryRoutes);
+app.use("/api", roleRoutes);
 app.use("/api", packageRoutes);
 app.use("/api", rackRoutes);
 app.use("/api", medicineRoutes);

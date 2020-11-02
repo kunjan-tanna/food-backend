@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const crypto = require("crypto");
+const Role = require("./role");
 const { ObjectId } = mongoose.Schema;
 
 const { v1: uuidv1 } = require("uuid");
@@ -49,11 +50,13 @@ const userSchema = new mongoose.Schema(
          trim: true,
          required: true,
       },
-      role: {
-         type: String,
-         default: "teacher",
-         enum: ["teacher", "admin"],
+      roleId: {
+         type: ObjectId,
+         ref: Role,
+
+         required: false,
       },
+
       salt: String,
    },
    { timestamps: true }

@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const { ObjectId } = mongoose.Schema;
 const Rack = require("./rack");
 const Package = require("./package");
-const Category = require("./category");
+const Category = require("./role");
 const PackageType = require("./packageType");
 const User = require("./auth");
 
