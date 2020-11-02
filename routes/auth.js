@@ -52,6 +52,11 @@ router.post(
    upload.single("avtar"),
    createUser
 );
+//Forgot Password Route
+router.put("/forgotpassword", forgotPassword);
+
+//Reset Password Route
+//router.put("/resetpassword", resetPassword);
 
 //Create signin Route
 router.post(

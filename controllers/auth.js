@@ -1,8 +1,18 @@
 const User = require("../models/auth");
 const { validationResult } = require("express-validator");
 const jwt = require("jsonwebtoken");
+const nodemailer = require("nodemailer");
 const _ = require("lodash");
 let expressJwt = require("express-jwt");
+
+//Nodemailer Email
+const transporter = nodemailer.createTransport({
+   service: "gmail",
+   auth: {
+      user: "noreplykjn@gmail.com",
+      pass: "noreply@2628",
+   },
+});
 
 // Get Id of User in controller
 exports.getUserById = async (req, res, next, id) => {
@@ -126,7 +136,55 @@ exports.signin = (req, res) => {
       console.log(error);
    }
 };
+//Forgot Password for user
+exports.forgotPassword = (req, res) => {
+   try {
+      const { email } = req.body;
+      User.findOne({ email }, (err, user) => {
+         console.log("USERS", user);
+         if (err || !user) {
+            return res.status(400).json({
+               error: "User email does not exists",
+            });
+         }
 
+         let token = jwt.sign(
+            { _id: user._id },
+            process.env.RESET_PASSWORD_KEY
+         );
+         const data = {
+            from: "noreplykjn@gmail.com",
+            to: email,
+            subject: "Password Reset Link",
+            html: `<h2> Please Click on given link to reset your password</h2>
+                  <p>
+                   <a href="${process.env.CLIENT_URL}/resetpassword?resetLink=${token}">Click Here</a>
+                  </p> `,
+         };
+         return user.updateOne({ resetLink: token }, (err, success) => {
+            if (err) {
+               return res.status(400).json({
+                  error: "Reset Password Link Error",
+               });
+            } else {
+               transporter.sendMail(data, (err, body) => {
+                  if (err) {
+                     return res.json({
+                        error: err.message,
+                     });
+                  }
+                  return res.json({
+                     message:
+                        "Email has been sent, kindly Follow the instruction",
+                  });
+               });
+            }
+         });
+      });
+   } catch (error) {
+      console.log(error);
+   }
+};
 //Perform Logout
 exports.signout = (req, res) => {
    res.clearCookie("token");
