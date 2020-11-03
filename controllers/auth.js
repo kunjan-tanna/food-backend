@@ -141,7 +141,7 @@ exports.forgotPassword = (req, res) => {
    try {
       const { email } = req.body;
       User.findOne({ email }, (err, user) => {
-         console.log("USERS", user);
+         // console.log("USERS", user);
          if (err || !user) {
             return res.status(400).json({
                error: "User email does not exists",
@@ -183,6 +183,52 @@ exports.forgotPassword = (req, res) => {
       });
    } catch (error) {
       console.log(error);
+   }
+};
+//Reset Password for user
+exports.resetPassword = (req, res) => {
+   const { resetLink, newPass } = req.body;
+   if (resetLink) {
+      jwt.verify(
+         resetLink,
+         process.env.RESET_PASSWORD_KEY,
+         (error, decodedData) => {
+            console.log(resetLink);
+            if (error) {
+               return res.status(401).json({
+                  error: "Incorrect Token Or Id Is Expired",
+               });
+            }
+            User.findOne({ resetLink }, (err, user) => {
+               console.log("USER", user);
+               if (err || !user) {
+                  return res.status(400).json({
+                     error: "User with reset link does not exist",
+                  });
+               }
+               let obj = {
+                  password: newPass,
+                  resetLink: "",
+               };
+               user = _.extend(user, obj);
+               user.save((err, result) => {
+                  if (error) {
+                     return res.status(400).json({
+                        error: "Reset Password Error",
+                     });
+                  } else {
+                     return res.status(200).json({
+                        message: "Your Password Has Been Changed",
+                     });
+                  }
+               });
+            });
+         }
+      );
+   } else {
+      return res.status(400).json({
+         error: "Authentication Error!",
+      });
    }
 };
 //Perform Logout

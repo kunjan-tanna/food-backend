@@ -56,7 +56,7 @@ router.post(
 router.put("/forgotpassword", forgotPassword);
 
 //Reset Password Route
-//router.put("/resetpassword", resetPassword);
+router.put("/resetpassword", resetPassword);
 
 //Create signin Route
 router.post(
