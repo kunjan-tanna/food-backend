@@ -49,15 +49,16 @@ exports.getAllbanquet = (req, res) => {
       //    },
       // ])
       Banquet.find()
-      .exec((err, banquet) => {
-         console.log("ban", banquet);
-         if (err) {
-            return res.status(400).json({
-               error: "No banquet found",
-            });
-         }
-         res.json(banquet);
-      });
+         .populate("locationId")
+         .exec((err, banquet) => {
+            // console.log("ban", banquet);
+            if (err) {
+               return res.status(400).json({
+                  error: "No banquet found",
+               });
+            }
+            res.json(banquet);
+         });
    } catch (error) {
       console.log(error);
    }
