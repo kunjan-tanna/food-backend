@@ -22,23 +22,7 @@ exports.createbanquet = (req, res) => {
 //Get All Banquet Data
 exports.getAllbanquet = (req, res) => {
    try {
-      Banquet.aggregate([
-         {
-            $geoNear: {
-               near: {
-                  type: "Point",
-                  coordinates: [
-                     parseFloat(req.query.lng),
-                     parseFloat(req.query.lat),
-                  ],
-               },
-               distanceField: "dist.calculated",
-               includeLocs: "dist.location",
-               maxDistance: 5000,
-               spherical: true,
-            },
-         },
-      ]).exec((err, banquet) => {
+      Banquet.find().exec((err, banquet) => {
          console.log("ban", banquet);
          if (err) {
             return res.status(400).json({
