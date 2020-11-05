@@ -10,30 +10,15 @@ const cors = require("cors");
 const path = require("path");
 
 //My Routes
-
-//FOR AUTHENTICATION
-const authRoutes = require("./routes/auth");
-//FOR MEDICINE
-const medicineRoutes = require("./routes/medicine");
-const roleRoutes = require("./routes/role");
-const packageRoutes = require("./routes/package");
-const rackRoutes = require("./routes/rack");
-const packageTypeRoutes = require("./routes/packageType");
-//FOR PURCHASE
-const companiesRoutes = require("./routes/companies");
-const purchaseRoutes = require("./routes/purchase");
-const paymentRoutes = require("./routes/payment");
-//FOR SALE
-const saleRoutes = require("./routes/sale");
-const customerRoutes = require("./routes/customer");
+const banRoutes = require("./routes/banquet");
+const geoRoutes = require("./routes/geolocation");
 
 //DB Connection
 mongoose
-   .connect(process.env.MONGOLAB_URI || "mongodb://localhost:27017/vc", {
+   .connect(process.env.MONGOLAB_URI || "mongodb://localhost:27017/food", {
       useNewUrlParser: true,
       useUnifiedTopology: true,
       useCreateIndex: true,
-      useFindAndModify: false,
    })
    .then(() => {
       console.log("DB CONNECTED");
@@ -47,17 +32,8 @@ app.use(cors());
 app.use("/upload", express.static(path.join(__dirname, "public/upload")));
 
 //Routes
-app.use("/api", authRoutes);
-app.use("/api", roleRoutes);
-app.use("/api", packageRoutes);
-app.use("/api", rackRoutes);
-app.use("/api", medicineRoutes);
-app.use("/api", packageTypeRoutes);
-app.use("/api", companiesRoutes);
-app.use("/api", purchaseRoutes);
-app.use("/api", paymentRoutes);
-app.use("/api", saleRoutes);
-app.use("/api", customerRoutes);
+app.use("/api", banRoutes);
+app.use("/api", geoRoutes);
 
 //PORT
 const port = process.env.PORT || 8000;
