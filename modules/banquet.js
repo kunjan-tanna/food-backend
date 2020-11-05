@@ -1,7 +1,6 @@
 const mongoose = require("mongoose");
-const { ObjectId } = mongoose.Schema;
-const Geolocation = require("./geolocation");
 
+//Create Geolocation Schema
 const banquetSchema = new mongoose.Schema(
    {
       banName: {
@@ -21,11 +20,7 @@ const banquetSchema = new mongoose.Schema(
          type: String,
          default: null,
       },
-      locationId: {
-         type: ObjectId,
-         ref: Geolocation,
-         required: false,
-      },
+
       mobile: {
          type: String,
          trim: true,

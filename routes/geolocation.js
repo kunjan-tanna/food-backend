@@ -3,7 +3,7 @@ const router = express.Router();
 
 const {
    createGeolocation,
-
+   getGeobanquet,
    getAllGeolocation,
 } = require("../controllers/geolocation");
 
@@ -11,5 +11,8 @@ const {
 router.post("/create/geolocation", createGeolocation);
 
 router.get("/geolocation", getAllGeolocation);
+
+//get geo Route
+router.get("/geo", getGeobanquet);
 
 module.exports = router;

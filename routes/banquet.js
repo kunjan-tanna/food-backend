@@ -23,12 +23,19 @@ let storage = multer.diskStorage({
 
 let upload = multer({ storage: storage });
 
-const { createbanquet, getAllbanquet } = require("../controllers/banquet");
+const {
+   createbanquet,
+   getAllbanquet,
+   getGeobanquet,
+} = require("../controllers/banquet");
 
 //Create banquet Route
 router.post("/create/banquet", upload.single("avtar"), createbanquet);
 
 //get all banquet Route
 router.get("/banquet", getAllbanquet);
+
+//get geo Route
+router.get("/geo/banquet", getGeobanquet);
 
 module.exports = router;

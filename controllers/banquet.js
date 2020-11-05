@@ -22,43 +22,65 @@ exports.createbanquet = (req, res) => {
 //Get All Banquet Data
 exports.getAllbanquet = (req, res) => {
    try {
-      // // //To Join one or more tables uaing aggregate fn()
-      // Banquet.aggregate([
-      //    {
-      //       $lookup: {
-      //          from: "locations",
-      //          localField: "locationId",
-      //          foreignField: "_id",
-      //          as: "locationDetails",
-      //       },
-      //       $geoNear: {
-      //          near: {
-      //             type: "Point",
-      //             coordinates: [
-      //                parseFloat(req.query.lng),
-      //                parseFloat(req.query.lat),
-      //             ],
-      //          },
-      //          includeLocs: "locations",
-      //          maxDistance: 5000,
-      //          spherical: true,
-      //       },
-      //       $match: {
-      //          locationId: "5fa28c4034751d07c48a180f",
-      //       },
-      //    },
-      // ])
-      Banquet.find()
-         .populate("locationId")
-         .exec((err, banquet) => {
-            // console.log("ban", banquet);
-            if (err) {
-               return res.status(400).json({
-                  error: "No banquet found",
-               });
-            }
-            res.json(banquet);
-         });
+      Banquet.aggregate([
+         {
+            $geoNear: {
+               near: {
+                  type: "Point",
+                  coordinates: [
+                     parseFloat(req.query.lng),
+                     parseFloat(req.query.lat),
+                  ],
+               },
+               distanceField: "dist.calculated",
+               includeLocs: "dist.location",
+               maxDistance: 5000,
+               spherical: true,
+            },
+         },
+      ]).exec((err, banquet) => {
+         console.log("ban", banquet);
+         if (err) {
+            return res.status(400).json({
+               error: "No banquet found",
+            });
+         }
+         res.json(banquet);
+      });
+   } catch (error) {
+      console.log(error);
+   }
+};
+
+//Get filtering banquet
+exports.getGeobanquet = (req, res) => {
+   try {
+      //To Join one or more tables uaing aggregate fn()
+      Banquet.aggregate([
+         {
+            $geoNear: {
+               near: {
+                  type: "Point",
+                  coordinates: [
+                     parseFloat(req.query.lng),
+                     parseFloat(req.query.lat),
+                  ],
+               },
+               distanceField: "dist.calculated",
+               includeLocs: "dist.location",
+               maxDistance: 5000,
+               spherical: true,
+            },
+         },
+      ]).exec((err, banquet) => {
+         console.log("ban", req.query);
+         if (err) {
+            return res.status(400).json({
+               error: "No banquet found",
+            });
+         }
+         res.json(banquet);
+      });
    } catch (error) {
       console.log(error);
    }
