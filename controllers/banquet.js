@@ -22,32 +22,34 @@ exports.createbanquet = (req, res) => {
 //Get All Banquet Data
 exports.getAllbanquet = (req, res) => {
    try {
-      // //To Join one or more tables uaing aggregate fn()
-      Banquet.aggregate([
-         {
-            $lookup: {
-               from: "locations",
-               localField: "locationId",
-               foreignField: "_id",
-               as: "locationDetails",
-            },
-            $geoNear: {
-               near: {
-                  type: "Point",
-                  coordinates: [
-                     parseFloat(req.query.lng),
-                     parseFloat(req.query.lat),
-                  ],
-               },
-               includeLocs: "locations",
-               maxDistance: 5000,
-               spherical: true,
-            },
-            $match: {
-               locationId: "5fa28c4034751d07c48a180f",
-            },
-         },
-      ]).exec((err, banquet) => {
+      // // //To Join one or more tables uaing aggregate fn()
+      // Banquet.aggregate([
+      //    {
+      //       $lookup: {
+      //          from: "locations",
+      //          localField: "locationId",
+      //          foreignField: "_id",
+      //          as: "locationDetails",
+      //       },
+      //       $geoNear: {
+      //          near: {
+      //             type: "Point",
+      //             coordinates: [
+      //                parseFloat(req.query.lng),
+      //                parseFloat(req.query.lat),
+      //             ],
+      //          },
+      //          includeLocs: "locations",
+      //          maxDistance: 5000,
+      //          spherical: true,
+      //       },
+      //       $match: {
+      //          locationId: "5fa28c4034751d07c48a180f",
+      //       },
+      //    },
+      // ])
+      Banquet.find()
+      .exec((err, banquet) => {
          console.log("ban", banquet);
          if (err) {
             return res.status(400).json({
