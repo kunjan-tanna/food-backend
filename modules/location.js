@@ -1,4 +1,6 @@
 const mongoose = require("mongoose");
+const Banquet = require("./banquet");
+const { ObjectId } = mongoose.Schema;
 
 //Create Geolocation Schema
 const geoSchema = new mongoose.Schema({
@@ -10,23 +12,15 @@ const geoSchema = new mongoose.Schema({
       type: [Number],
    },
 });
-//Create Demo Schema
-const DemoSchema = new mongoose.Schema(
+//Create Location Schema
+const LocationSchema = new mongoose.Schema(
    {
-      name: {
-         type: String,
-         required: true,
-         trim: true,
-      },
-      capacity: {
-         type: String,
+      banquetId: {
+         type: ObjectId,
+         ref: Banquet,
          default: null,
       },
-      mobile: {
-         type: String,
-         trim: true,
-         required: true,
-      },
+
       location: {
          type: geoSchema,
          index: "2dsphere",
@@ -35,4 +29,4 @@ const DemoSchema = new mongoose.Schema(
    { timestamps: true }
 );
 
-module.exports = mongoose.model("Demo", DemoSchema);
+module.exports = mongoose.model("location", LocationSchema);

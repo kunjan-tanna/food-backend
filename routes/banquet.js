@@ -35,7 +35,4 @@ router.post("/create/banquet", upload.single("avtar"), createbanquet);
 //get all banquet Route
 router.get("/banquet", getAllbanquet);
 
-//get geo Route
-router.get("/geo/banquet", getGeobanquet);
-
 module.exports = router;
