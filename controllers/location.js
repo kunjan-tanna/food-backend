@@ -23,7 +23,7 @@ exports.getAllLocation = async (req, res) => {
       await Location.find({
          location: {
             $near: {
-               $maxDistance: 5000,
+               $maxDistance: 80000,
                $geometry: {
                   type: "Point",
                   coordinates: [

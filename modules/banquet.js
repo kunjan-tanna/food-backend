@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-//Create Geolocation Schema
+//Create Banquet Schema
 const banquetSchema = new mongoose.Schema(
    {
       banName: {
