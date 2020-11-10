@@ -12,6 +12,8 @@ const path = require("path");
 //My Routes
 const banRoutes = require("./routes/banquet");
 const locationRoutes = require("./routes/location");
+const bundleRoutes = require("./routes/bundle");
+const productRoutes = require("./routes/product");
 
 //DB Connection
 mongoose
@@ -34,6 +36,8 @@ app.use("/upload", express.static(path.join(__dirname, "public/upload")));
 //Routes
 app.use("/api", banRoutes);
 app.use("/api", locationRoutes);
+app.use("/api", bundleRoutes);
+app.use("/api", productRoutes);
 
 //PORT
 const port = process.env.PORT || 8000;

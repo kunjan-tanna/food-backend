@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 
+
 //Create Banquet Schema
 const banquetSchema = new mongoose.Schema(
    {
