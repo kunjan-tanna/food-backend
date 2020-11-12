@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const Product = require("./product");
 const { ObjectId } = mongoose.Schema;
+const Banquet = require("./banquet");
 
 //Create bundle Schema
 const bundleSchema = new mongoose.Schema(
@@ -21,6 +22,11 @@ const bundleSchema = new mongoose.Schema(
       productId: {
          type: [ObjectId],
          ref: Product,
+         default: null,
+      },
+      banquetId: {
+         type: ObjectId,
+         ref: Banquet,
          default: null,
       },
       status: {

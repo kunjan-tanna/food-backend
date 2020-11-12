@@ -1,6 +1,4 @@
 const mongoose = require("mongoose");
-const { ObjectId } = mongoose.Schema;
-const Banquet = require("./banquet");
 
 //Create product Schema
 const productSchema = new mongoose.Schema(
@@ -11,11 +9,6 @@ const productSchema = new mongoose.Schema(
          trim: true,
       },
 
-      banquetId: {
-         type: ObjectId,
-         ref: Banquet,
-         default: null,
-      },
       price: {
          type: String,
          default: null,
