@@ -43,23 +43,28 @@ exports.getProduct = (req, res) => {
 //Update Increment Product
 exports.updateIncProduct = async (req, res) => {
    try {
-      Product.findByIdAndUpdate(
-         req.body.productId,
-         {
-            $inc: {
-               quantity: 1,
-            },
-         },
-         {
-            new: true,
-         }
-      ).exec((err, result) => {
+      Product.findByIdAndUpdate(req.body.productId).exec((err, product) => {
          if (err) {
             return res.status(422).json({
                error: "No Update Records",
             });
          }
-         return res.json(result);
+         req.product = product;
+         const quan = req.product.quantity + 1;
+         const price = quan * req.body.price;
+         const editProduct = req.product;
+         editProduct._id = req.body.productId;
+         editProduct.quantity = quan;
+         editProduct.price = price;
+         editProduct.save((err, m) => {
+            // console.log("medicinwewewe", m);
+            if (err) {
+               return res.status(400).json({
+                  error: "Medicine data not updated",
+               });
+            }
+            return res.json(m);
+         });
       });
    } catch (error) {
       console.log(error);
