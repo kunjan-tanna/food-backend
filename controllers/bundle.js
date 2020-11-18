@@ -30,6 +30,8 @@ exports.getAllbundle = (req, res) => {
                foreignField: "_id",
                as: "productDetails",
             },
+         },
+         {
             $lookup: {
                from: "items",
                localField: "extraItem",
