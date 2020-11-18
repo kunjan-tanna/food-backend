@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
-const { ObjectId } = mongoose.Schema;
-const Item = require("./extraItem");
+
 //Create product Schema
 const productSchema = new mongoose.Schema(
    {
@@ -22,11 +21,7 @@ const productSchema = new mongoose.Schema(
          type: Number,
          default: 0,
       },
-      extraItem: {
-         type: [ObjectId],
-         ref: Item,
-         default: null,
-      },
+
       status: {
          type: String,
          default: "Active",

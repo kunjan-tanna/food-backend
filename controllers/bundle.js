@@ -30,9 +30,14 @@ exports.getAllbundle = (req, res) => {
                foreignField: "_id",
                as: "productDetails",
             },
+            $lookup: {
+               from: "items",
+               localField: "extraItem",
+               foreignField: "_id",
+               as: "ItemDetails",
+            },
          },
-      ])
-      .exec((err, bundle) => {
+      ]).exec((err, bundle) => {
          if (err) {
             return res.status(400).json({
                error: "No bundle found",
