@@ -14,6 +14,7 @@ const banRoutes = require("./routes/banquet");
 const locationRoutes = require("./routes/location");
 const bundleRoutes = require("./routes/bundle");
 const productRoutes = require("./routes/product");
+const itemRoutes = require("./routes/extraItem");
 
 //DB Connection
 mongoose
@@ -38,6 +39,7 @@ app.use("/api", banRoutes);
 app.use("/api", locationRoutes);
 app.use("/api", bundleRoutes);
 app.use("/api", productRoutes);
+app.use("/api", itemRoutes);
 
 //PORT
 const port = process.env.PORT || 8000;
