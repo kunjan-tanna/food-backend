@@ -81,7 +81,7 @@ exports.updateDecProduct = async (req, res) => {
          }
          req.product = product;
          const quan = req.product.quantity - 1;
-         const price = quan * req.body.price;
+         const price = req.product.price;
          const editProduct = req.product;
          editProduct._id = req.body.productId;
          editProduct.quantity = quan;
