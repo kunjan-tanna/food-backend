@@ -16,6 +16,7 @@ exports.getProductById = (req, res, next, id) => {
       console.log(error);
    }
 };
+
 //Create product api
 exports.createProduct = async (req, res) => {
    try {
@@ -104,22 +105,39 @@ exports.updateDecProduct = async (req, res) => {
 //Get All product Data api
 exports.getAllProduct = async (req, res) => {
    try {
-      await Product.aggregate([
-         {
-            $lookup: {
-               from: "items",
-               localField: "extraItem",
-               foreignField: "_id",
-               as: "ItemDetails",
-            },
-         },
-      ]).exec((err, product) => {
+      await Product.find().exec((err, product) => {
          if (err) {
             return res.status(400).json({
                error: "No product Found",
             });
          }
          return res.json(product);
+      });
+   } catch (error) {
+      console.log(error);
+   }
+};
+//Delete product Data
+exports.deleteproduct = async (req, res) => {
+   try {
+      const removeproduct = await req.product;
+      Product.deleteOne(removeproduct, (err, product) => {
+         if (err) {
+            return res.status(400).json({
+               error: "No product Found",
+            });
+         } else {
+            if (product.ok === 1) {
+               Product.find().exec((err, product) => {
+                  if (err) {
+                     return res.status(400).json({
+                        error: "No product Found",
+                     });
+                  }
+                  return res.json(product);
+               });
+            }
+         }
       });
    } catch (error) {
       console.log(error);
