@@ -192,10 +192,11 @@ exports.googleLogin = (req, res) => {
             "613629143448-2rog0gdm4g7p8jdld8duvq8fbbhfol5g.apps.googleusercontent.com",
       })
       .then((response) => {
+         console.log(response);
          let { email_verified, name, email } = response.payload;
          if (email_verified) {
             User.findOne({ email }, (err, user) => {
-               if (err || !user) {
+               if (err) {
                   return res.status(400).json({
                      error: "Something Went Wrong..",
                   });
