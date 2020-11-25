@@ -2,7 +2,11 @@ const User = require("../modules/auth");
 const jwt = require("jsonwebtoken");
 const { validationResult } = require("express-validator");
 const _ = require("lodash");
+const { OAuth2Client } = require("google-auth-library");
 
+let client = new OAuth2Client(
+   "613629143448-2rog0gdm4g7p8jdld8duvq8fbbhfol5g.apps.googleusercontent.com"
+);
 // Get Id of User in controller
 exports.getUserById = async (req, res, next, id) => {
    try {
@@ -177,4 +181,103 @@ exports.signout = (req, res) => {
    res.json({
       message: "User signout",
    });
+};
+//LogIn With Google
+exports.googleLogin = (req, res) => {
+   let { tokenId } = req.body;
+   client
+      .verifyIdToken({
+         idToken: tokenId,
+         audience:
+            "613629143448-2rog0gdm4g7p8jdld8duvq8fbbhfol5g.apps.googleusercontent.com",
+      })
+      .then((response) => {
+         let { email_verified, name, email } = response.payload;
+         if (email_verified) {
+            User.findOne({ email }, (err, user) => {
+               if (err || !user) {
+                  return res.status(400).json({
+                     error: "Something Went Wrong..",
+                  });
+               } else {
+                  if (user) {
+                     const token = jwt.sign(
+                        { _id: user._id },
+                        process.env.SECRET
+                     );
+                     res.cookie("token", token, {
+                        expire: new Date() + 9999,
+                     });
+                     const {
+                        _id,
+                        name,
+                        firstName,
+                        lastName,
+                        email,
+                        address,
+                        pinCode,
+                        mobile,
+                     } = user;
+                     return res.json({
+                        token,
+                        user: {
+                           _id,
+                           name,
+                           firstName,
+                           lastName,
+                           email,
+                           address,
+                           pinCode,
+                           mobile,
+                        },
+                     });
+                  } else {
+                     let password = email + process.env.SECRET;
+                     let newUser = new User({
+                        name,
+                        email,
+                        password,
+                     });
+                     newUser.save((error, data) => {
+                        if (error) {
+                           return res.status(400).json({
+                              err: "Something went wrong",
+                           });
+                        }
+                        let token = jwt.sign(
+                           {
+                              _id: data._id,
+                           },
+                           process.env.SECRET
+                        );
+
+                        const {
+                           _id,
+                           name,
+                           firstName,
+                           lastName,
+                           email,
+                           address,
+                           pinCode,
+                           mobile,
+                        } = user;
+                        return res.json({
+                           token,
+                           user: {
+                              _id,
+                              name,
+                              firstName,
+                              lastName,
+                              email,
+                              address,
+                              pinCode,
+                              mobile,
+                           },
+                        });
+                     });
+                  }
+               }
+            });
+         }
+      });
 };

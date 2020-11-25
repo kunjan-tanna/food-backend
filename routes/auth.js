@@ -12,6 +12,7 @@ const {
    getAllUser,
    updateUser,
    deleteUser,
+   googleLogin,
 } = require("../controllers/auth");
 
 //Get Parameter of user
@@ -51,5 +52,8 @@ router.post(
 
 //Create Signout Route
 router.get("/signout", signout);
+
+//LogIn With Google
+router.post("/googlelogin", googleLogin);
 
 module.exports = router;
