@@ -3,6 +3,7 @@ const jwt = require("jsonwebtoken");
 const { validationResult } = require("express-validator");
 const _ = require("lodash");
 const { OAuth2Client } = require("google-auth-library");
+const fetch = require("node-fetch");
 
 let client = new OAuth2Client(
    "613629143448-2rog0gdm4g7p8jdld8duvq8fbbhfol5g.apps.googleusercontent.com"
@@ -280,5 +281,101 @@ exports.googleLogin = (req, res) => {
                }
             });
          }
+      });
+};
+//LogIn With Facebook
+exports.facebookLogin = (req, res) => {
+   const { userID, accessToken } = req.body;
+   let urlGraphFacebook = `https://graph.facebook.com/v2.11/${userID}/?fields=id,name,email&access_token=${accessToken}`;
+   fetch(urlGraphFacebook, {
+      method: "GET",
+   })
+      .then((response) => response.json())
+      .then((response) => {
+         const { name, email } = response;
+
+         User.findOne({ email }, (err, user) => {
+            if (err) {
+               return res.status(400).json({
+                  error: "Something Went Wrong..",
+               });
+            } else {
+               if (user) {
+                  const token = jwt.sign({ _id: user._id }, process.env.SECRET);
+                  res.cookie("token", token, {
+                     expire: new Date() + 9999,
+                  });
+                  const {
+                     _id,
+                     name,
+                     firstName,
+                     lastName,
+                     email,
+                     address,
+                     pinCode,
+                     mobile,
+                  } = user;
+                  return res.json({
+                     token,
+                     user: {
+                        _id,
+                        name,
+                        firstName,
+                        lastName,
+                        email,
+                        address,
+                        pinCode,
+                        mobile,
+                     },
+                  });
+               } else {
+                  let password = email + process.env.SECRET;
+
+                  let newUser = new User({
+                     name,
+                     email,
+                     password,
+                  });
+
+                  newUser.save((error, data) => {
+                     if (error) {
+                        return res.status(400).json({
+                           err: "Something went wrong",
+                        });
+                     }
+                     let token = jwt.sign(
+                        {
+                           _id: data._id,
+                        },
+                        process.env.SECRET
+                     );
+
+                     const {
+                        _id,
+                        name,
+                        firstName,
+                        lastName,
+                        email,
+                        address,
+                        pinCode,
+                        mobile,
+                     } = data;
+                     return res.json({
+                        token,
+                        user: {
+                           _id,
+                           name,
+                           firstName,
+                           lastName,
+                           email,
+                           address,
+                           pinCode,
+                           mobile,
+                        },
+                     });
+                  });
+               }
+            }
+         });
       });
 };

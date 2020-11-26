@@ -12,6 +12,7 @@ const {
    getAllUser,
    updateUser,
    deleteUser,
+   facebookLogin,
    googleLogin,
 } = require("../controllers/auth");
 
@@ -55,5 +56,8 @@ router.get("/signout", signout);
 
 //LogIn With Google
 router.post("/googlelogin", googleLogin);
+
+//LogIn With Facebook
+router.post("/facebooklogin", facebookLogin);
 
 module.exports = router;
