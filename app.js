@@ -16,6 +16,7 @@ const bundleRoutes = require("./routes/bundle");
 const productRoutes = require("./routes/product");
 const itemRoutes = require("./routes/extraItem");
 const auth = require("./routes/auth");
+const paymentb = require("./routes/paymentb");
 
 //DB Connection
 mongoose
@@ -42,6 +43,7 @@ app.use("/api", bundleRoutes);
 app.use("/api", productRoutes);
 app.use("/api", itemRoutes);
 app.use("/api", auth);
+app.use("/api", paymentb);
 
 //PORT
 const port = process.env.PORT || 8000;
