@@ -17,12 +17,6 @@ router.param("productId", getProductById);
 //Create Product Route
 router.post("/create/product", createProduct);
 
-//Update Increment Products
-router.put("/edit/inc/product/:productId", updateIncProduct);
-
-//Update Decrements Products
-router.put("/edit/dec/product/:productId", updateDecProduct);
-
 //Read Product Route
 router.get("/get/product/:productId", getProduct);
 
